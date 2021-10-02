@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Doctor Appointment</title>
+	<link rel="stylesheet" type="text/css" href="/doc-app/style.css">
+		<script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+	<script>
+		$(document).ready(function(){
+			
+				var dtToday=new Date();
+
+				var month=dtToday.getMonth()+1;
+				var day=dtToday.getDate()+1;
+				var year=dtToday.getFullYear();
+				if(month<10)
+					month='0'+month.toString();
+				if(day<10)
+					day='0'+day.toString();
+				var maxDate=year+'-'+month+'-'+day;
+				$('#dateController').attr('min',maxDate);
+			
+		})
+	</script>
+
+
+
+</head>
+
+</head>
+<body>
+
+	
+	<main>
+		<div class="app_form">
+			<div class="block">
+				<div class="heading-block">
+					<div class="heading">
+						Book Appointment
+					</div>
+				</div>
+				<form  role="form" name="myForm" action="dbop.php" enctype="multipart/form-data" onsubmit="return validateForm()" method="POST">
+					<div class="body">
+							<span class="error"><?=$upload_error ?></span>
+							<span class="success"><?=$output ?></span>
+							<div class="input-values">
+								<div class="label">Name Of Patient:</div>
+							    <input type="text" name="name" value="" placeholder="Enter your full Name" >
+							    <br>
+							    <span class="error" id="name-err"></span>
+							</div>
+							<div class="input-values">
+								<div class="label">Age Of Patient:</div>
+							    <input type="text" name="age" placeholder="Enter your Age" >
+							    <br>
+							    <span class="error" id="age-err"></span>
+							</div>
+							<div class="input-values">
+								<div class="label">Date of Birth:</div>
+							    <input type="date" name="dob" value="">
+							    <br>
+							    <span class="error" id="dob-err"></span>
+							</div>
+							<div class="input-values">
+								<div class="label">Blood group:</div>
+							    <select name="b-group" id=b-group>
+							    	<option value="">Select</option>
+							    	<option value="A+">A+</option>
+							    	<option value="A-">A-</option>
+							    	<option value="O+">O+</option>
+							    	<option value="O-">O-</option>
+							    	<option value="B+">B+</option>
+							    	<option value="B-">B-</option>
+							    	<option value="AB+">AB+</option>
+							    	<option value="AB-">AB-</option>
+							    </select>
+							    		
+							</div>
+							<div class="input-values">
+								<div class="label">Address:</div>
+							    <textarea rows="1" placeholder="Your Address.." name="add"  ></textarea>
+							    <br>
+							   <span class="error" id="add-err"></span>
+							</div>
+							<div class="input-values">
+								<div class="label">Mobile No.:</div>
+							   	<input type="tel" name="contact" placeholder="Enter your contact number" value="" >
+							   	<br>
+							   	<span class="error" id="contact-err"></span>
+							</div>
+							<div class="input-values">
+								<div class="label">Email Id.:</div>
+							   	<input type="email" name="email" placeholder="Enter your Email Id"  value="" >
+							   	<br>
+							   	<span class="error" id="email-err"></span>
+							</div>
+							<div class="input-values">
+								<div class="label">Appointment:</div>
+							    <input type="date" name="date-app" id="dateController" value="<?=$app ?>"  >
+							    <br>
+							    <span class="error" id="app-err"></span>
+							</div>
+							<div class="input-values">
+								<div class="label">Time:</div>
+								<div class="radio-block">
+									<input type="radio" id="tm10" name="tm" value="10AM">
+									10:00AM-11:00AM
+									<input type="radio" id="tm11" name="tm" value="11AM">
+									11:00AM-12:00PM <br>
+									<input type="radio" id="tm01" name="tm" value="01PM">
+									01:00PM-:02:00PM
+									<input type="radio" id="tm02" name="tm" value="02PM">
+									02:00PM-:03:00PM<br>
+									<input type="radio" id="tm03" name="tm" value="03PM">
+									03:00PM-:04:00PM
+									<input type="radio" id="tm05" name="tm" value="05PM">
+									05:00PM-:06:00PM
+								</div>
+								<br>
+								<span class="error" id="tm-err"></span>
+							    
+							</div>
+
+							<div class="input-values">
+								<div class="label">Patient Report.:</div>
+							   	<input type="file" name="file" >
+							   
+							</div>
+						
+					</div>
+					<div class="button">
+						<div class="submit-button">
+							<input type="submit" name="submit">
+						</div>
+						
+					</div>
+				 </form>
+
+				
+			</div>
+		</div>
+	</main>
+
+
+	<script>
+		function validateForm() 
+		{
+		  let name = document.forms["myForm"]["name"].value;
+		  if (name == "") {
+		    document.getElementById("name-err").innerHTML = "Please fill full name";
+		    return false;
+		  }
+		  else
+		  {
+		  	var regex= new RegExp("^[a-zA-Z]+(?:\\s[a-zA-Z]+)+$")
+		  	if(!regex.test(name))
+		  	{
+		  		document.getElementById("name-err").innerHTML = "Name should only contain char and space";
+		  		return false;
+		  	}
+		  	
+		  }
+
+		  let age = document.forms["myForm"]["age"].value;
+		  if (age == "") {
+		    document.getElementById("age-err").innerHTML = "Please fill Age here";
+		    return false;
+		  }
+		  else
+		  {
+
+		  	age=parseInt(age, 10)
+		  	
+		  		if( age>100 || age<1)
+		  		{
+		  			document.getElementById("age-err").innerHTML = "Age should between 1-100";
+		  			return false;
+		  		}
+		  }
+
+		  let dob = document.forms["myForm"]["dob"].value;
+		  if(dob=="")
+		  {
+		  	document.getElementById("dob-err").innerHTML = "Date of birth is mandatory";
+		    return false;
+		  }
+
+		  let add = document.forms["myForm"]["add"].value;
+		  if(add=="")
+		  {
+		  	document.getElementById("add-err").innerHTML = "Address is mandatory";
+		    return false;
+		  }
+
+
+		  let contact = document.forms["myForm"]["contact"].value;
+		  if (contact == "") {
+		    document.getElementById("contact-err").innerHTML = "Please enter your contact";
+		    return false;
+		  }
+		  else
+		  {
+		  	var regex= new RegExp("^[0-9]{10}+$")
+		  	if(!regex.test(contact))
+		  	{
+		  		document.getElementById("contact-err").innerHTML = "contact should be 10 digit number";
+		  		return false;
+		  	}
+		  	
+		  }
+
+		  let email = document.forms["myForm"]["email"].value;
+		  if (email == "") {
+		    document.getElementById("email-err").innerHTML = "Please enter your email";
+		    return false;
+		  }
+		  else
+		  {
+		  	var regex= new RegExp("^[^\\s@]+@[^\\s@]+\.[^\\s@]+$")
+		  	if(!regex.test(email))
+		  	{
+		  		document.getElementById("email-err").innerHTML = "Email should be valid";
+		  		return false;
+		  	}
+		  	
+		  }
+
+		  let app = document.forms["myForm"]["app"].value;
+		  if(app=="")
+		  {
+		  	document.getElementById("app-err").innerHTML = "Appointment date is mandatory";
+		    return false;
+		  }
+
+		  let tm= document.forms["myForm"]["tm"].value;
+		  if(tm=="")
+		  {
+		  	document.getElementById("tm-err").innerHTML = "Time is mandatory";
+		    return false;
+		  }
+
+		 
+
+		}
+	</script>
+	
+
+</body>
+</html>
